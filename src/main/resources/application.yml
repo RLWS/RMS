@@ -1,2 +1,10 @@
 server:
   port: 8181
+logging:
+  level:
+    root: info
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/view/
+      suffix: .jsp
