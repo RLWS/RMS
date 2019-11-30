@@ -13,7 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
 
     @RequestMapping(value = "index")
-    public ModelAndView index() {
-        return new ModelAndView("index");
+    public String index(ModelAndView modelAndView) {
+        modelAndView.addObject("name","test");
+        return "index";
     }
 }

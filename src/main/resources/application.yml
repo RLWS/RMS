@@ -1,10 +1,12 @@
+
 server:
   port: 8181
 logging:
   level:
     root: info
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/view/
-      suffix: .jsp
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
