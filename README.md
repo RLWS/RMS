@@ -1,2 +1,2 @@
 # RMS
-使用spring-boot+netty实现对centos的资源监控
+使用spring-boot+thymeleaf实现对centos的资源监控

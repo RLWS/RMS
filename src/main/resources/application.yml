@@ -10,3 +10,6 @@ spring:
     suffix: .html
     mode: HTML
     encoding: UTF-8
+  devtools:
+    restart:
+      enabled: true
