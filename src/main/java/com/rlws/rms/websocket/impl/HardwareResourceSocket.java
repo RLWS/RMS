@@ -2,6 +2,7 @@ package com.rlws.rms.websocket.impl;
 
 import com.rlws.rms.pool.HardwareResourceSocketPool;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
@@ -15,6 +16,7 @@ import java.io.IOException;
  */
 
 @Slf4j
+@Component
 @ServerEndpoint("/hardwareResource")
 public class HardwareResourceSocket {
 
