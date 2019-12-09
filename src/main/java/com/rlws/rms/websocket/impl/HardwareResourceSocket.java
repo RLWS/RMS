@@ -32,6 +32,7 @@ public class HardwareResourceSocket {
      */
     @OnOpen
     public void onOpen(Session session) {
+        log.info("成功建立连接");
         this.session = session;
         HardwareResourceSocketPool.getPool().add(this);
     }

@@ -6,15 +6,20 @@
     <script type="text/javascript" th:src="@{/js/monitor.js}"></script>
 </head>
 <body>
-
-<input id="in" type="text" value="asdf">
-<input id="in1" type="text" value="asdf">
-<a href="">1111111441111113</a>
+<button onclick="time('start')">开始</button>
+<button onclick="time('pause')">暂停</button>
+<button onclick="time('stop')">停止</button>
+<input id="in" type="text" value="">
 
 <script>
     $(function () {
-        console.log($("#in"),11111111111112222)
+
     })
+    function time(stauts) {
+        $.ajax({
+            url:"/"+stauts
+        })
+    }
 </script>
 </body>
 </html>
