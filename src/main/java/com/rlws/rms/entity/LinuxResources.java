@@ -3,6 +3,8 @@ package com.rlws.rms.entity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * Linux资源汇总
  *
@@ -21,4 +23,9 @@ public class LinuxResources {
      * 内存相关
      */
     Memory memory;
+
+    /**
+     * 当前时间戳
+     */
+    Date dateTime;
 }

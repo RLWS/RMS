@@ -36,21 +36,23 @@ public class LinuxUtils {
         for (String temp : cpuStr.split(Constants.COLON)[1].split(Constants.COMMA)) {
             double num = Double.parseDouble(temp.trim().split(" ")[0]);
             //用户所使用的cpu资源
-            if (temp.contains("us")){
+            if (temp.contains("us")) {
                 cpu.setUserUsedCpu(num);
                 log.info("用户空间占用CPU的百分比:" + num);
             }
             //系统所使用的cpu资源
-            else if (temp.contains("sy")){
+            else if (temp.contains("sy")) {
                 cpu.setKernelUsedCpu(num);
                 log.info("内核空间占用CPU的百分比:" + num);
             }
             //空闲的cpu资源
-            else if (temp.contains("id")){
+            else if (temp.contains("id")) {
                 cpu.setFreeCpu(num);
                 log.info("空闲CPU百分比:" + num);
             }
         }
+        //已使用资源
+        cpu.setTotalUsedCpu(cpu.getUserUsedCpu() + cpu.getKernelUsedCpu());
         bufferedReader.close();
         return cpu;
     }
@@ -62,22 +64,32 @@ public class LinuxUtils {
      */
     public static Memory getMemoryInfo() throws IOException {
         //读取linux文件
-        File memoryInfoFile = new File("/proc/meminfo");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(memoryInfoFile)));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("/proc/meminfo"))));
         Memory memory = new Memory();
         String line;
         StringTokenizer token;
         while ((line = bufferedReader.readLine()) != null) {
             token = new StringTokenizer(line);
             line = token.nextToken();
+            //总内存
             if ("MemTotal:".equalsIgnoreCase(line)) {
                 memory.setMemTotal(token.nextToken());
-            } else if ("MemFree:".equalsIgnoreCase(line)) {
+            }
+            //空闲内存
+            else if ("MemFree:".equalsIgnoreCase(line)) {
                 memory.setMemFree(token.nextToken());
-            } else if ("SwapTotal:".equalsIgnoreCase(line)) {
+            }
+            //总交换空间大小
+            else if ("SwapTotal:".equalsIgnoreCase(line)) {
                 memory.setSwapTotal(token.nextToken());
-            } else if ("SwapFree:".equalsIgnoreCase(line)) {
+            }
+            //空闲交换空间
+            else if ("SwapFree:".equalsIgnoreCase(line)) {
                 memory.setSwapFree(token.nextToken());
+            }
+            //高速缓冲存储器（cache memory）用的内存
+            else if ("Cached:".equalsIgnoreCase(line)) {
+                memory.setCached(token.nextToken());
             }
         }
         return memory;

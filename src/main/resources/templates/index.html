@@ -2,14 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Title</title>
-    <script type="text/javascript" th:src="@{/js/jquery-1.11.0.js}"></script>
-    <script type="text/javascript" th:src="@{/js/monitor.js}"></script>
+    <base th:href="@{/}">
+    <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+    <script type="text/javascript" src="js/monitor.js"></script>
 </head>
 <body>
 <button onclick="time('start')">开始</button>
 <button onclick="time('pause')">暂停</button>
 <button onclick="time('stop')">停止</button>
-<input id="in" type="text" value="">
+cpu占用<input id="cpu" type="text" value="">
+内存占用<input id="memory" type="text" value="">
 
 <script>
     $(function () {

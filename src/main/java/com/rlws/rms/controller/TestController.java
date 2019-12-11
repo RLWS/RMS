@@ -21,25 +21,10 @@ import java.io.IOException;
 @EnableScheduling
 public class TestController {
 
-    /**
-     * 标识:开始计时
-     */
-    private final String START_TIME = "A0";
 
-    /**
-     * 标识:停止计时
-     */
-    private final String STOP_TIME = "A1";
 
-    /**
-     * 启动状态标识
-     */
-    private String status;
 
-    /**
-     * 全局时间
-     */
-    private Integer time = 0;
+
 
     /**
      * cpu测试
@@ -48,6 +33,7 @@ public class TestController {
     public void cpu() throws IOException {
         log.info(LinuxUtils.getCpuInfo().toString());
     }
+
     /**
      * cpu测试
      */
@@ -57,40 +43,15 @@ public class TestController {
     }
 
     /**
-     * 开始计时
-     */
-    @RequestMapping(value = "start")
-    public void start() {
-        log.info("开始计时");
-        status = START_TIME;
-    }
-
-    /**
-     * 停止计时
-     */
-    @RequestMapping(value = "stop")
-    public void stop() {
-        log.info("停止计时");
-        status = STOP_TIME;
-    }
-
-    /**
-     * 暂停计时
-     */
-    @RequestMapping(value = "pause")
-    public void pause() {
-        log.info("暂停计时");
-        status = "";
-    }
-
-    /**
      * 向连接池中的所有连接推送信息
      *
      * @throws IOException IO异常
+     * @Scheduled(cron = "0/1 * * * * ?")
      */
     private void sendMessageFormPool() throws IOException {
+        String test = "{\"cpu\":{\"freeCpu\":82.4,\"kernelUsedCpu\":11.8,\"totalUsedCpu\":56.0,\"userUsedCpu\":5.9},\"memory\":{\"memFree\":\"88796\",\"memTotal\":\"1882236\",\"swapFree\":\"0\",\"swapTotal\":\"0\"}}";
         for (int i = 0; i < HardwareResourceSocketPool.getPool().size(); i++) {
-            HardwareResourceSocketPool.getPool().get(i).sendMessage(time.toString());
+            HardwareResourceSocketPool.getPool().get(i).sendMessage(test);
         }
     }
 }

@@ -29,4 +29,9 @@ public class Memory {
      * 空闲交换空间
      */
     String swapFree;
+
+    /**
+     * 高速缓冲存储器（cache memory）用的内存
+     */
+    String cached;
 }
