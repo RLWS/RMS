@@ -2,9 +2,6 @@ $(document).ready(function () {
 
     createWebSocket();
 
-
-
-
     /**
      * 建立webSocket
      */
@@ -12,8 +9,8 @@ $(document).ready(function () {
         var webSocket = null;
 
         //判断当前浏览器是否支持webSocket
-        if ('webSocket' in $("window")) {
-            webSocket = new webSocket("ws://" + document.location.host + "/hardwareResource");
+        if ('WebSocket' in window) {
+            webSocket = new WebSocket("ws://" + document.location.host + "/hardwareResource");
         } else {
             alert('当前浏览器 Not support webSocket')
         }
@@ -26,21 +23,14 @@ $(document).ready(function () {
         //连接成功建立的回调方法
         webSocket.onopen = function () {
             console.log("webSocket连接成功");
+            createChart();
         }
 
         //接收到消息的回调方法
         webSocket.onmessage = function (event) {
             var result = JSON.parse(event.data);
-            createChart();
-            if (result.cpu != undefined) {
-                $("#cpu").val(result.cpu.totalUsedCpu)
-            }
-            if (result.memory != undefined) {
-                var num = (parseFloat(result.memory.memTotal) - (parseFloat(result.memory.memFree) + parseFloat(result.memory.cached))) / parseFloat(result.memory.memTotal);
-                $("#memory").val(num.toFixed(2))
-            }
-
-            console.log(JSON.parse(event.data));
+            console.log(result);
+            createChart(result);
         }
 
         //连接关闭的回调方法
@@ -65,24 +55,18 @@ $(document).ready(function () {
      * @param data
      */
     function createChart(data) {
-        new Chartist.Line('#ct-visits', {
-            labels: ['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2012', '2013', '2014', '2012', '2013', '2014', '2015'],
-            series: [
-                [5, 2, 7, 4, 5, 3, 5, 5, 3, 5, 5, 3, 5, 4],
-                [2, 5, 2, 6, 2, 5, 2, 2, 5, 2, 2, 5, 2, 4],
-                [3, 5, 2, 5, 4, 9, 4, 4, 9, 4, 4, 9, 4, 9]
-            ]
-        }, {
-            top: 0,
+        new Chartist.Line('#ct-visits', data, {
+            high: 100,
             low: 1,
             showPoint: true,
             fullWidth: true,
             plugins: [
-                Chartist.plugins.tooltip()
+                Chartist.plugins.tooltip(),
+
             ],
             axisY: {
                 labelInterpolationFnc: function (value) {
-                    return (value / 1) + 'k';
+                    return (value / 1) + '%';
                 }
             },
             showArea: true

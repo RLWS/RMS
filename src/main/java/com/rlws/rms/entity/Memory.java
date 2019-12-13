@@ -2,6 +2,8 @@ package com.rlws.rms.entity;
 
 import lombok.Data;
 
+import javax.validation.constraints.Digits;
+
 /**
  * 存放内存使用数据
  *
@@ -13,25 +15,31 @@ public class Memory {
     /**
      * 总内存
      */
-    String memTotal;
+    Double memTotal;
 
     /**
      * 空闲内存
      */
-    String memFree;
+    Double memFree;
 
     /**
      * 总交换空间大小
      */
-    String swapTotal;
+    Double swapTotal;
 
     /**
      * 空闲交换空间
      */
-    String swapFree;
+    Double swapFree;
 
     /**
      * 高速缓冲存储器（cache memory）用的内存
      */
-    String cached;
+    Double cached;
+
+    /**
+     * 已用百分比
+     */
+    @Digits(integer = 100, fraction = 2)
+    Double memTotalUsed;
 }

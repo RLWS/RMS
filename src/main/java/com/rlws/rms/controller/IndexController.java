@@ -1,9 +1,9 @@
 package com.rlws.rms.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.rlws.rms.entity.LinuxResources;
 import com.rlws.rms.pool.HardwareResourceSocketPool;
 import com.rlws.rms.utils.LinuxUtils;
+import com.rlws.rms.utils.chart.CurveChart;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * @author rlws
@@ -32,27 +34,27 @@ public class IndexController {
      *
      * @throws IOException I/O异常抛出
      */
-    //@Scheduled(cron = "0/1 * * * * ?")
+    @Scheduled(cron = "0/1 * * * * ?")
     public void timeScheduled() throws IOException {
-        sendMessageFormPool(LinuxResources
-                .builder()
-                .cpu(LinuxUtils.getCpuInfo())
-                .memory(LinuxUtils.getMemoryInfo())
-                .build());
+        HashMap<String, Double> yNode = new HashMap<>(10);
+        yNode.put("cpu", LinuxUtils.getCpuInfo().getTotalUsedCpu());
+        yNode.put("memory", LinuxUtils.getMemoryInfo().getMemTotalUsed());
+        HashMap<String, Object> map = CurveChart.addAxis(yNode, Calendar.getInstance().get(Calendar.MINUTE) + ":" + Calendar.getInstance().get(Calendar.SECOND));
+        sendMessageFormPool(map);
     }
 
     /**
      * 向连接池中的所有连接推送信息
      *
-     * @param linuxResources Linux资源对象
+     * @param message 推送的信息
      * @throws IOException I/O异常
      */
-    private void sendMessageFormPool(LinuxResources linuxResources) throws IOException {
+    private void sendMessageFormPool(Object message) throws IOException {
         for (int i = 0; i < HardwareResourceSocketPool.getPool().size(); i++) {
             HardwareResourceSocketPool
                     .getPool()
                     .get(i)
-                    .sendMessage(JSON.toJSONString(linuxResources));
+                    .sendMessage(JSON.toJSONString(message));
         }
     }
 }

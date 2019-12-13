@@ -73,24 +73,27 @@ public class LinuxUtils {
             line = token.nextToken();
             //总内存
             if ("MemTotal:".equalsIgnoreCase(line)) {
-                memory.setMemTotal(token.nextToken());
+                memory.setMemTotal(Double.parseDouble(token.nextToken()));
             }
             //空闲内存
             else if ("MemFree:".equalsIgnoreCase(line)) {
-                memory.setMemFree(token.nextToken());
+                memory.setMemFree(Double.parseDouble(token.nextToken()));
             }
             //总交换空间大小
             else if ("SwapTotal:".equalsIgnoreCase(line)) {
-                memory.setSwapTotal(token.nextToken());
+                memory.setSwapTotal(Double.parseDouble(token.nextToken()));
             }
             //空闲交换空间
             else if ("SwapFree:".equalsIgnoreCase(line)) {
-                memory.setSwapFree(token.nextToken());
+                memory.setSwapFree(Double.parseDouble(token.nextToken()));
             }
             //高速缓冲存储器（cache memory）用的内存
             else if ("Cached:".equalsIgnoreCase(line)) {
-                memory.setCached(token.nextToken());
+                memory.setCached(Double.parseDouble(token.nextToken()));
             }
+            //计算已用百分比
+            memory.setMemTotalUsed((memory.getMemTotal() - (memory.getMemFree() + memory.getCached())) / memory.getMemTotal());
+
         }
         return memory;
     }
