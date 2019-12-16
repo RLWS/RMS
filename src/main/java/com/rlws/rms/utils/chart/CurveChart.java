@@ -3,6 +3,7 @@ package com.rlws.rms.utils.chart;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
@@ -17,7 +18,7 @@ public class CurveChart {
     /**
      * 图表的横坐标长度
      */
-    private static final int CHART_DATA_LENGTH = 15;
+    private static final int CHART_DATA_LENGTH = 20;
 
     /**
      * 横坐标
@@ -110,5 +111,14 @@ public class CurveChart {
             return chartData;
         }
         return null;
+    }
+
+    /**
+     * 获取每条线的名称
+     *
+     * @return 返回set集合(存放每条线的名称)
+     */
+    public static Set<String> getCurveChartNode() {
+        return seriesMap.keySet();
     }
 }

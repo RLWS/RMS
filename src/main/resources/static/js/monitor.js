@@ -29,7 +29,7 @@ $(document).ready(function () {
         //接收到消息的回调方法
         webSocket.onmessage = function (event) {
             var result = JSON.parse(event.data);
-            console.log(result);
+            //console.log(result);
             createChart(result);
         }
 
