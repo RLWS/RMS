@@ -91,10 +91,10 @@ public class LinuxUtils {
             else if ("Cached:".equalsIgnoreCase(line)) {
                 memory.setCached(Double.parseDouble(token.nextToken()));
             }
-            //计算已用百分比
-            memory.setMemTotalUsed((memory.getMemTotal() - (memory.getMemFree() + memory.getCached())) / memory.getMemTotal());
-
         }
+        log.info(memory.toString());
+        //计算已用百分比
+        memory.setMemTotalUsed((memory.getMemTotal() - (memory.getMemFree() + memory.getCached())) * 100 / memory.getMemTotal());
         return memory;
     }
 }

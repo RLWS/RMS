@@ -40,6 +40,5 @@ public class Memory {
     /**
      * 已用百分比
      */
-    @Digits(integer = 100, fraction = 2)
     Double memTotalUsed;
 }
